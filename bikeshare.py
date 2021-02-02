@@ -23,18 +23,18 @@ def get_filters():
             ret = input(error_print).lower()
         return ret
 
-    # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
+    # Get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     city = input_mod('Please input the city name:\n',
               'Error!Please input the correct city name:\n',
               CITY_DATA.keys())
 
 
-    # TO DO: get user input for month (all, january, february, ... , june)
+    # Get user input for month (all, january, february, ... , june)
     month = input_mod('Which month? all, january, february, ... , june?\n',
                     'Please input correct month:\n',
                     ['all', 'january', 'february', 'march', 'april', 'may', 'june'])
 
-    # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
+    # Get user input for day of week (all, monday, tuesday, ... sunday)
     day = input_mod('Which day? all, monday, tuesday, ... sunday?\n',
                     'Please input correct day:\n',
                     ['all', 'monday', 'tuesday', 'wednesday', 'friday', 'saturday', 'sunday'])
@@ -53,29 +53,29 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-    # load data file into a dataframe
+    # Load data file into a dataframe
     df = pd.read_csv(CITY_DATA[city])
 
-    # convert the Start Time column to datetime
+    # Convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
-    # extract month and day of week from Start Time to create new columns
+    # Extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.day_name()
     df['hour'] = df['Start Time'].dt.hour
 
-    # filter by month if applicable
+    # Filter by month if applicable
     if month != 'all':
-        # use the index of the months list to get the corresponding int
+        # Use the index of the months list to get the corresponding int
         months = ['january', 'february', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
 
-        # filter by month to create the new dataframe
+        # Filter by month to create the new dataframe
         df = df[df['month'] == month]
 
-    # filter by day of week if applicable
+    # Filter by day of week if applicable
     if day != 'all':
-        # filter by day of week to create the new dataframe
+        # Filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day.title()]
 
 
@@ -88,14 +88,14 @@ def time_stats(df):
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
 
-    # TO DO: display the most common month
+    # Display the most common month
     print('The most common month is ' + str(df['month'].mode()[0]))
 
 
-    # TO DO: display the most common day of week
+    # Display the most common day of week
     print('The most common day of week is ' + str(df['day_of_week'].mode()[0]))
 
-    # TO DO: display the most common start hour
+    # Display the most common start hour
     print('The most common start hour is ' + str(df['hour'].mode()[0]))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -108,15 +108,15 @@ def station_stats(df):
     print('\nCalculating The Most Popular Stations and Trip...\n')
     start_time = time.time()
 
-    # TO DO: display most commonly used start station
+    # Display most commonly used start station
     start_most = df['Start Station'].mode()[0]
     print('The most commonly used start station is ' + start_most)
 
-    # TO DO: display most commonly used end station
+    # Display most commonly used end station
     end_most = df['End Station'].mode()[0]
     print('The most commonly used end station is ' + end_most)
 
-    # TO DO: display most frequent combination of start station and end station trip
+    # Display most frequent combination of start station and end station trip
     top = df.groupby(['Start Station', 'End Station']).size().idxmax()
     print("The most frequent combination of start station and end station trip is {} to {}".format(top[0], top[1]))
 
@@ -130,10 +130,10 @@ def trip_duration_stats(df):
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
 
-    # TO DO: display total travel time
+    # Display total travel time
     print('The total travel time is ' + str(df['Trip Duration'].sum()) + ' seconds')
 
-    # TO DO: display mean travel time
+    # Display mean travel time
     print('The mean travel time is ' + str(df['Trip Duration'].mean()) + ' seconds')
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -146,15 +146,15 @@ def user_stats(df, city):
     print('\nCalculating User Stats...\n')
     start_time = time.time()
 
-    # TO DO: Display counts of user types
+    # Display counts of user types
     print('The counts of user types: ')
     print(df['User Type'].value_counts())
 
-    # TO DO: Display counts of gender
+    # Display counts of gender
     try :
         print('The counts of gender: ')
         print(df['Gender'].value_counts())
-    # TO DO: Display earliest, most recent, and most common year of birth
+    # Display earliest, most recent, and most common year of birth
         print('The earliest year of birth is ' + str(df['Birth Year'].max()))
         print('The most recent year of birth is ' + str(df['Birth Year'].min()))
         print('The most common year of birth is ' + str(df['Birth Year'].mode()[0]))
